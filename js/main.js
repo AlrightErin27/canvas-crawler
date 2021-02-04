@@ -10,7 +10,6 @@ canvas.setAttribute("width", getComputedStyle(canvas)["width"])
 // runs to game loop with a set interval
 let gameLoopInterval = setInterval(gameLoop, 60)
 
-
 // ctx.fillStyle = 'white'
 
 // ctx.lineWidth = 10;
@@ -65,6 +64,8 @@ let ogre = new Crawler(200, 100, "#bada55", 60, 120)
 function movementHandler(e) {
   // hero speed constant
   const speed = 10
+  console.log(e)
+  movementDisplay.innerText = `X: ${hero.x} Y: ${hero.y}`
   switch (e.key) {
     case ('w'):
         hero.y = hero.y - speed
@@ -81,19 +82,68 @@ function movementHandler(e) {
   }
 }
 
+function detectHit() {
+  // // check for collisions on each side, one by one
+  // let ogreLeft = hero.x + hero.width >= ogre.x
+  // // console.log('ogreLeft', ogreLeft)
+
+  // let ogreRight = hero.x <= ogre.x + ogre.width
+  // // console.log('ogreRight', ogreRight)
+
+  // let checkX = ogreLeft && ogreRight
+  // // console.log(check)
+
+  // let ogreTop = hero.y + hero.height >= ogre.y 
+  // // console.log('ogreTop', ogreTop)
+
+  
+  // let ogreBottom = hero.y <= ogre.y + ogre.height
+  // // console.log('ogreBottom', ogreBottom)
+
+  // let checkY = ogreTop && ogreBottom
+
+  // // check all boundries together
+  // let checkXY = checkY && checkX
+
+  if(
+    // left
+    hero.x + hero.width >= ogre.x &&
+    // right
+    hero.x <= ogre.x + ogre.width &&
+    // top
+    hero.y + hero.height >= ogre.y &&
+    // bottom
+    hero.y <= ogre.y + ogre.height 
+    ) {
+      endGame()
+    }
+}
+
+function endGame() {
+  ogre.alive = false
+  clearInterval(gameLoopInterval)
+  movementDisplay.innerText = 'YOU KILLED THE OGRE!'
+
+}
+
 // main game loop
 function gameLoop() {
   // clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+  // check for collisions
+  detectHit()
   // render our game objects!
+  if(ogre.alive) {
+    ogre.render()
+  }
   hero.render()
-  ogre.render()
 }
+
 
 /* events listeners */
 canvas.addEventListener('click', e => {
-  drawBox(e.offsetX, e.offsetY, 50, 50, 'rgba(255, 0, 0, .1)')
-  movementDisplay.innerText = `X: ${e.offsetX} Y: ${e.offsetY}`
+  // drawBox(e.offsetX, e.offsetY, 50, 50, 'rgba(255, 0, 0, .1)')
+  // movementDisplay.innerText = `X: ${e.offsetX} Y: ${e.offsetY}`
   // console.log(e)
 })
 
