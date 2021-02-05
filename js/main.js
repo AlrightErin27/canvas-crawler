@@ -26,9 +26,9 @@ let gameLoopInterval = setInterval(gameLoop, 60)
 // ctx.strokeRect(100, 10, 100, 100)
 
 // just for testing clicks
-function drawBox(x, y, height, width, color) {
+function drawBox(x, y, width, height, color) {
   ctx.fillStyle = color
-  ctx.fillRect(x, y, height, width)
+  ctx.fillRect(x, y, width, height)
 }
 
 
